@@ -287,7 +287,7 @@ Mains MOUILLÉES avant de toucher le poisson (mucus protecteur contre les infect
 COMPORTEMENT OBLIGATOIRE pour toutes les recommandations :
 - Donne TOUJOURS exactement 3 leurres numérotés (1, 2, 3)
 - Pour chaque leurre : type | couleur | action précise | vitesse | profondeur
-- Explique POURQUOI ces conditions orientent vers ces choix (température, clarté, pression, heure)
+- Explique POURQUOI ces conditions (température, clarté, pression, heure) orientent vers ces choix
 - Indique la meilleure heure de la journée pour ces conditions
 - Réponds en québécois décontracté, sois précis et concis
 - Ne t'arrête JAMAIS avant d'avoir donné les 3 leurres complets`;
@@ -321,7 +321,7 @@ exports.handler = async (event) => {
       },
       body: JSON.stringify({
         model: 'claude-haiku-4-5',
-        max_tokens: 1024,
+        max_tokens: 1500,
         system: systemOverride || SYSTEM_PROMPT,
         messages,
       }),
