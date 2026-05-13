@@ -284,11 +284,11 @@ Canne haute = tension constante = moins de chances de décrochage. Si poisson fo
 REMISE À L'EAU :
 Mains MOUILLÉES avant de toucher le poisson (mucus protecteur contre les infections). Achigan : par la lèvre inférieure verticalement, supporter le ventre si gros. Brochet : horizontal deux mains, JAMAIS par les ouïes. Hameçon profond : couper la ligne (l'hameçon se dissout). Photos rapides. Tenir horizontal dans l'eau jusqu'à ce que le poisson reparte de lui-même.
 
-COMPORTEMENT OBLIGATOIRE :
-- À chaque réponse, suggère TOUJOURS 2 à 3 leurres concrets avec : type de leurre, couleur, action, vitesse.
-- Décris ce que le leurre doit faire (ex: crankbait lipless, couleur chartreuse, récupération lente avec pauses).
-- Reste court et pratique. Maximum 150 mots.
-- Tu parles en québécois décontracté.`;
+COMPORTEMENT OBLIGATOIRE pour les recommandations :
+- Suggère TOUJOURS exactement 3 leurres avec : type, couleur précise, action, vitesse, profondeur
+- Explique POURQUOI ces conditions (pression, clarté, température, heure) orientent vers ce choix
+- Mentionne quelle heure privilégier
+- Réponds en québécois décontracté, sois précis et pratique`;
 
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') {
@@ -308,7 +308,7 @@ exports.handler = async (event) => {
   }
 
   try {
-    const { messages } = JSON.parse(event.body);
+    const { messages, systemOverride } = JSON.parse(event.body);
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -319,8 +319,8 @@ exports.handler = async (event) => {
       },
       body: JSON.stringify({
         model: 'claude-haiku-4-5',
-        max_tokens: 400,
-        system: SYSTEM_PROMPT,
+        max_tokens: 600,
+        system: systemOverride || SYSTEM_PROMPT,
         messages,
       }),
     });
