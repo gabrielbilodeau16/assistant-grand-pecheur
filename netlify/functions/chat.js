@@ -284,11 +284,13 @@ Canne haute = tension constante = moins de chances de décrochage. Si poisson fo
 REMISE À L'EAU :
 Mains MOUILLÉES avant de toucher le poisson (mucus protecteur contre les infections). Achigan : par la lèvre inférieure verticalement, supporter le ventre si gros. Brochet : horizontal deux mains, JAMAIS par les ouïes. Hameçon profond : couper la ligne (l'hameçon se dissout). Photos rapides. Tenir horizontal dans l'eau jusqu'à ce que le poisson reparte de lui-même.
 
-COMPORTEMENT OBLIGATOIRE pour les recommandations :
-- - Suggère TOUJOURS exactement 3 leurres. Pour chaque leurre écris tout sur UNE SEULE ligne : type | couleur | action | vitesse | profondeur. Sois très concis.
-- Explique POURQUOI ces conditions (pression, clarté, température, heure) orientent vers ce choix
-- Mentionne quelle heure privilégier
-- Réponds en québécois décontracté, sois précis et pratique`;
+COMPORTEMENT OBLIGATOIRE pour toutes les recommandations :
+- Donne TOUJOURS exactement 3 leurres numérotés (1, 2, 3)
+- Pour chaque leurre : type | couleur | action précise | vitesse | profondeur
+- Explique POURQUOI ces conditions orientent vers ces choix (température, clarté, pression, heure)
+- Indique la meilleure heure de la journée pour ces conditions
+- Réponds en québécois décontracté, sois précis et concis
+- Ne t'arrête JAMAIS avant d'avoir donné les 3 leurres complets`;
 
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') {
