@@ -8,17 +8,14 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:#111c14;font-family:'Trebuchet MS',Arial,sans-serif;color:#f0ede6;min-height:100vh;-webkit-font-smoothing:antialiased;}
-
 .header{background:#0a1209;border-bottom:1px solid rgba(240,237,230,0.07);padding:18px 24px;}
 .brand{font-family:Georgia,serif;font-size:16px;font-weight:700;color:rgba(240,237,230,0.6);}
 .brand em{color:#D4651A;font-style:italic;}
 .brand-sub{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:rgba(240,237,230,0.3);margin-top:2px;}
-
 .tabs{display:flex;border-bottom:1px solid rgba(240,237,230,0.07);background:#0a1209;}
 .tab{flex:1;padding:14px 8px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(240,237,230,0.4);border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;transition:color .2s;}
 .tab.active{color:#D4651A;border-bottom-color:#D4651A;}
 .tab:hover:not(.active){color:rgba(240,237,230,0.7);}
-
 .main{max-width:800px;margin:0 auto;padding:24px 20px 40px;}
 .panel{display:none;}
 .panel.active{display:block;}
@@ -28,7 +25,7 @@ body{background:#111c14;font-family:'Trebuchet MS',Arial,sans-serif;color:#f0ede
 .meteo-banner.hidden{display:none;}
 .meteo-dot{width:6px;height:6px;border-radius:50%;background:#D4651A;flex-shrink:0;}
 .meteo-val{color:#f0ede6;font-weight:600;}
-.btn-meteo{margin-left:auto;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;border-radius:4px;border:1px solid rgba(212,101,26,0.3);background:none;color:#D4651A;cursor:pointer;}
+.btn-close{margin-left:auto;background:none;border:none;color:rgba(240,237,230,0.3);cursor:pointer;font-size:16px;padding:0 4px;}
 
 /* CHAT */
 .chat-history{min-height:260px;max-height:420px;overflow-y:auto;margin-bottom:16px;display:flex;flex-direction:column;gap:12px;padding-right:4px;}
@@ -46,7 +43,6 @@ body{background:#111c14;font-family:'Trebuchet MS',Arial,sans-serif;color:#f0ede
 .dots span:nth-child(2){animation-delay:.2s;}
 .dots span:nth-child(3){animation-delay:.4s;}
 @keyframes dot{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-4px);}}
-
 .input-row{display:flex;gap:8px;align-items:center;}
 .chat-input{flex:1;background:rgba(240,237,230,0.05);border:1px solid rgba(240,237,230,0.12);color:#f0ede6;padding:11px 14px;font-size:14px;font-family:inherit;border-radius:8px;outline:none;resize:none;height:44px;overflow:hidden;}
 .chat-input:focus{border-color:rgba(212,101,26,0.5);}
@@ -59,7 +55,7 @@ body{background:#111c14;font-family:'Trebuchet MS',Arial,sans-serif;color:#f0ede
 .btn-send:disabled{opacity:.4;cursor:not-allowed;}
 .btn-send:not(:disabled):hover{opacity:.85;}
 
-/* GUIDE RAPIDE */
+/* GUIDE */
 .q-progress{display:flex;gap:4px;margin-bottom:20px;}
 .q-dot{height:3px;flex:1;border-radius:2px;background:rgba(240,237,230,0.12);}
 .q-dot.done{background:#D4651A;}
@@ -72,30 +68,31 @@ body{background:#111c14;font-family:'Trebuchet MS',Arial,sans-serif;color:#f0ede
 .q-result-box{background:rgba(240,237,230,0.04);border:1px solid rgba(240,237,230,0.1);border-left:3px solid #D4651A;border-radius:8px;padding:20px;font-size:14px;line-height:1.9;color:#f0ede6;white-space:pre-wrap;margin-bottom:12px;}
 .q-context-tags{margin-bottom:14px;display:flex;flex-wrap:wrap;gap:5px;}
 .q-tag{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;background:rgba(212,101,26,0.1);border:1px solid rgba(212,101,26,0.2);border-radius:3px;color:rgba(212,101,26,0.9);}
-.btn-reset{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:10px 18px;border-radius:6px;border:1px solid rgba(240,237,230,0.15);background:none;color:rgba(240,237,230,0.6);cursor:pointer;margin-right:8px;}
+.btn-reset{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:10px 18px;border-radius:6px;border:1px solid rgba(240,237,230,0.15);background:none;color:rgba(240,237,230,0.6);cursor:pointer;}
 .btn-reset:hover{border-color:rgba(240,237,230,0.3);color:#f0ede6;}
 .loading-overlay{text-align:center;padding:32px;color:rgba(240,237,230,0.5);font-size:14px;}
 .spinner{display:inline-block;width:20px;height:20px;border:2px solid rgba(212,101,26,0.2);border-top-color:#D4651A;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:8px;}
 @keyframes spin{to{transform:rotate(360deg);}}
 
-/* VOTE LEURRES */
-.vote-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+/* VOTE */
+.vote-row{display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap;}
+.vote-label{font-size:12px;color:rgba(240,237,230,0.4);}
 .btn-vote{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:8px 14px;border-radius:6px;border:1px solid rgba(240,237,230,0.15);background:none;color:rgba(240,237,230,0.5);cursor:pointer;transition:all .2s;}
+.btn-vote:hover{border-color:rgba(212,101,26,0.4);color:#D4651A;}
 .btn-vote.success{border-color:#4caf50;color:#4caf50;background:rgba(76,175,80,0.08);}
 .btn-vote.fail{border-color:#f44336;color:#f44336;background:rgba(244,67,54,0.08);}
-.btn-vote:hover{border-color:rgba(212,101,26,0.5);color:#D4651A;}
 
 /* HISTORIQUE */
-.hist-section{margin-top:24px;}
-.hist-title{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(240,237,230,0.35);margin-bottom:12px;}
-.hist-item{background:rgba(240,237,230,0.03);border:1px solid rgba(240,237,230,0.08);border-radius:8px;padding:12px 14px;margin-bottom:8px;font-size:13px;}
-.hist-item-date{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:rgba(240,237,230,0.3);margin-bottom:4px;}
+.hist-section{margin-top:24px;border-top:1px solid rgba(240,237,230,0.07);padding-top:20px;}
+.hist-title{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(240,237,230,0.3);margin-bottom:12px;}
+.hist-item{background:rgba(240,237,230,0.03);border:1px solid rgba(240,237,230,0.07);border-radius:8px;padding:10px 14px;margin-bottom:6px;}
+.hist-item-date{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:rgba(240,237,230,0.25);margin-bottom:3px;}
 .hist-item-conditions{color:rgba(240,237,230,0.5);font-size:12px;margin-bottom:6px;}
 .hist-item-result{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:3px;}
 .hist-item-result.success{background:rgba(76,175,80,0.15);color:#4caf50;}
 .hist-item-result.fail{background:rgba(244,67,54,0.1);color:#f44336;}
-.hist-item-result.unknown{background:rgba(240,237,230,0.06);color:rgba(240,237,230,0.3);}
-.btn-clear-hist{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:6px 12px;border-radius:4px;border:1px solid rgba(240,237,230,0.1);background:none;color:rgba(240,237,230,0.3);cursor:pointer;margin-top:8px;}
+.hist-item-result.unknown{background:rgba(240,237,230,0.06);color:rgba(240,237,230,0.25);}
+.btn-clear{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:6px 12px;border-radius:4px;border:1px solid rgba(240,237,230,0.08);background:none;color:rgba(240,237,230,0.25);cursor:pointer;margin-top:8px;}
 
 @media(max-width:500px){
   .header{padding:14px 16px;}
@@ -167,14 +164,21 @@ let isRecording = false;
 let recognition = null;
 let activeVoiceTarget = 'chat';
 let meteoData = null;
-let lastGuideReply = '';
 
-// === MÉTÉO ===
+// === DATE AUTO ===
+function getSaisonLabel() {
+  const mois = new Date().getMonth(); // 0=jan
+  const noms = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+  const saisons = ['hiver','hiver','hiver','printemps','Mai (eau froide)','Juin (frai)','Juillet (plein été)','Août (canicule)','Septembre (meilleur mois)','Octobre (fin de saison)','automne tardif','hiver'];
+  return `${noms[mois]} — ${saisons[mois]}`;
+}
+
+// === MÉTÉO AUTO ===
 async function fetchMeteo() {
   if (!navigator.geolocation) return;
   navigator.geolocation.getCurrentPosition(async (pos) => {
-    const { latitude, longitude } = pos.coords;
     try {
+      const { latitude, longitude } = pos.coords;
       const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,precipitation,cloudcover,windspeed_10m,surface_pressure&timezone=auto`);
       const data = await res.json();
       const c = data.current;
@@ -185,47 +189,30 @@ async function fetchMeteo() {
         pression: Math.round(c.surface_pressure),
         pluie: c.precipitation > 0
       };
-      // Détermine tendance pression (simplifiée)
-      const pressionLabel = meteoData.pression > 1015 ? 'haute (stable/hausse)' : meteoData.pression > 1008 ? 'normale (stable)' : 'basse (en chute)';
       const meteoLabel = meteoData.nuages > 70 ? 'Couvert' : meteoData.nuages > 30 ? 'Partiellement nuageux' : 'Grand soleil';
-      showMeteoBanner(`${meteoLabel} · ${meteoData.temp}°C · Vent ${meteoData.vent} km/h · Pression ${pressionLabel}`);
+      const pressionLabel = meteoData.pression > 1015 ? 'haute' : meteoData.pression > 1008 ? 'normale' : 'basse';
+      const banner = document.getElementById('meteo-banner');
+      banner.innerHTML = `<span class="meteo-dot"></span><span>Météo : <span class="meteo-val">${meteoLabel} · ${meteoData.temp}°C · Vent ${meteoData.vent} km/h · Pression ${pressionLabel} (${meteoData.pression} hPa)</span></span><button class="btn-close" onclick="this.parentElement.classList.add('hidden')">✕</button>`;
+      banner.classList.remove('hidden');
     } catch(e) {}
   }, () => {});
-}
-
-function showMeteoBanner(text) {
-  const banner = document.getElementById('meteo-banner');
-  banner.innerHTML = `<span class="meteo-dot"></span><span>Météo détectée : <span class="meteo-val">${text}</span></span><button class="btn-meteo" onclick="document.getElementById('meteo-banner').classList.add('hidden')">✕</button>`;
-  banner.classList.remove('hidden');
 }
 
 function getMeteoContext() {
   if (!meteoData) return '';
   const meteoLabel = meteoData.nuages > 70 ? 'Couvert' : meteoData.nuages > 30 ? 'Partiellement nuageux' : 'Grand soleil';
-  const pressionLabel = meteoData.pression > 1015 ? 'En hausse (après un front)' : meteoData.pression > 1008 ? 'Stable depuis quelques jours' : "En chute (orage qui s'en vient)";
-  return `\n\nMÉTÉO EN TEMPS RÉEL (détectée automatiquement) :
-- Température air : ${meteoData.temp}°C
-- Conditions : ${meteoLabel}${meteoData.pluie ? ', pluie active' : ''}
-- Vent : ${meteoData.vent} km/h
-- Pression barométrique : ${pressionLabel}`;
+  const pressionLabel = meteoData.pression > 1015 ? 'En hausse (après un front)' : meteoData.pression > 1008 ? 'Stable' : "En chute (orage qui s'en vient)";
+  return `\nMÉTÉO EN TEMPS RÉEL : ${meteoLabel}${meteoData.pluie ? ', pluie active' : ''} · Temp air ${meteoData.temp}°C · Vent ${meteoData.vent} km/h · Pression ${pressionLabel}`;
 }
 
-// === HISTORIQUE DES RECOMMANDATIONS ===
+// === HISTORIQUE ===
 function getHistorique() {
   try { return JSON.parse(localStorage.getItem('gp_historique') || '[]'); } catch(e) { return []; }
 }
-function saveHistorique(items) {
-  localStorage.setItem('gp_historique', JSON.stringify(items));
-}
+function saveHistorique(items) { localStorage.setItem('gp_historique', JSON.stringify(items)); }
 function addHistoriqueItem(conditions, reply) {
   const items = getHistorique();
-  items.unshift({
-    id: Date.now(),
-    date: new Date().toLocaleDateString('fr-CA'),
-    conditions: Object.values(conditions).join(' · '),
-    reply: reply.substring(0, 300),
-    result: 'unknown'
-  });
+  items.unshift({ id: Date.now(), date: new Date().toLocaleDateString('fr-CA'), conditions: Object.values(conditions).join(' · '), reply: reply.substring(0, 300), result: 'unknown' });
   if (items.length > 30) items.pop();
   saveHistorique(items);
 }
@@ -236,41 +223,35 @@ function voteHistorique(id, result) {
 }
 
 // === JOURNAL COACH ===
-function getJournal() {
-  try { return JSON.parse(localStorage.getItem('gp_journal') || '[]'); } catch(e) { return []; }
-}
-function saveJournal(entries) {
-  localStorage.setItem('gp_journal', JSON.stringify(entries));
-}
-function addJournalEntry(userText, aiSynthesis) {
+function getJournal() { try { return JSON.parse(localStorage.getItem('gp_journal') || '[]'); } catch(e) { return []; } }
+function saveJournal(entries) { localStorage.setItem('gp_journal', JSON.stringify(entries)); }
+function addJournalEntry(userText, aiReply) {
   const entries = getJournal();
-  entries.unshift({ date: new Date().toLocaleDateString('fr-CA'), user: userText, synthesis: aiSynthesis.substring(0, 250) });
+  entries.unshift({ date: new Date().toLocaleDateString('fr-CA'), user: userText, synthesis: aiReply.substring(0, 250) });
   if (entries.length > 25) entries.pop();
   saveJournal(entries);
 }
 function getJournalContext() {
   const entries = getJournal();
   if (!entries.length) return '';
-  return '\n\nJOURNAL DE PÊCHE (sorties passées) :\n' + entries.slice(0, 15).map(e => `[${e.date}] ${e.synthesis || e.user}`).join('\n');
+  return '\n\nJOURNAL DE PÊCHE :\n' + entries.slice(0, 15).map(e => `[${e.date}] ${e.synthesis || e.user}`).join('\n');
 }
 
 // === TABS ===
 function setTab(id) {
-  document.querySelectorAll('.tab').forEach((t, i) => {
-    t.classList.toggle('active', ['guide','chat','coach'][i] === id);
-  });
+  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', ['guide','chat','coach'][i] === id));
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.getElementById('panel-' + id).classList.add('active');
   if (id === 'guide') renderGuide();
 }
 
-// === QUESTIONS GUIDE RAPIDE ===
+// === QUESTIONS GUIDE (sans saison — détectée auto) ===
 const QUESTIONS = [
   {key:'espece', label:'Quelle espèce tu cibles ?', opts:['Brochet', 'Achigan à petite bouche', 'Achigan à grande bouche', 'Les deux (brochet + achigan)']},
-  {key:'saison', label:'On est en quelle période ?', opts:['Mai (eau froide)', 'Juin (frai)', 'Juillet (plein été)', 'Août (canicule)', 'Septembre (meilleur mois)', 'Octobre (fin de saison)']},
   {key:'heure', label:'Tu pêches à quelle heure ?', opts:['Tôt le matin (5h–8h)', 'Matin (8h–12h)', 'Après-midi (12h–17h)', 'Soirée (17h–21h)']},
   {key:'temp', label:"Température de l'eau ?", opts:['Moins de 10°C', '10 à 15°C', '15 à 20°C', '20 à 25°C', 'Plus de 25°C', 'Je sais pas']},
   {key:'clarte', label:"Clarté de l'eau ?", opts:['Claire (fond visible à 3+ pieds)', 'Légèrement colorée', 'Turbide / brune']},
+  {key:'pression', label:'Pression barométrique ?', opts:["En chute (orage qui s'en vient)", 'Stable depuis quelques jours', 'En hausse (après un front)', 'Je sais pas']},
   {key:'secteur', label:'Quel type de secteur ?', opts:['Baie peu profonde (herbes, sable)', 'Pointe rocheuse', 'Herbiers / nénuphars', 'Structure artificielle (quai)', 'Eau profonde 15+ pieds', 'Je cherche encore']}
 ];
 
@@ -313,11 +294,12 @@ async function pickAnswer(val) {
   const c = document.getElementById('guide-content');
   c.innerHTML = '<div class="loading-overlay"><span class="spinner"></span>Analyse des conditions en cours...</div>';
 
-  const summary = QUESTIONS.map(q => q.label + ' → ' + (guideAnswers[q.key] || '?')).join('\n');
+  const saison = getSaisonLabel();
+  const summary = `Date/Saison : ${saison}\n` + QUESTIONS.map(q => q.label + ' → ' + (guideAnswers[q.key] || '?')).join('\n');
   const meteoCtx = getMeteoContext();
   const journalCtx = getJournalContext();
 
-  const prompt = `Voici mes conditions de pêche aujourd'hui :\n\n${summary}${meteoCtx}${journalCtx}\n\nDonne-moi une recommandation complète. Structure ta réponse EXACTEMENT ainsi :\n\n📍 POURQUOI CES CONDITIONS\n[Explique en 2-3 phrases pourquoi température/clarté/pression/heure orientent vers ces choix]\n\n🎣 3 LEURRES RECOMMANDÉS\n\n1. [Type de leurre] — [Couleur précise] — [Action à faire] — [Vitesse] — [Profondeur]\n\n2. [Type de leurre] — [Couleur précise] — [Action à faire] — [Vitesse] — [Profondeur]\n\n3. [Type de leurre] — [Couleur précise] — [Action à faire] — [Vitesse] — [Profondeur]\n\n⏰ MEILLEURE HEURE\n[Quelle heure privilégier et pourquoi]\n\nSi mon journal ressemble à ces conditions, mentionne-le brièvement. Réponds en québécois décontracté.`;
+  const prompt = `Voici mes conditions de pêche aujourd'hui :\n\n${summary}${meteoCtx}${journalCtx}\n\nDonne-moi une recommandation complète. Structure ta réponse EXACTEMENT ainsi :\n\n📍 POURQUOI CES CONDITIONS\n[2-3 phrases : pourquoi température/clarté/pression/heure orientent vers ces choix]\n\n🎣 3 LEURRES RECOMMANDÉS\n\n1. [Type] — [Couleur précise] — [Action] — [Vitesse] — [Profondeur]\n[1 phrase pourquoi]\n\n2. [Type] — [Couleur précise] — [Action] — [Vitesse] — [Profondeur]\n[1 phrase pourquoi]\n\n3. [Type] — [Couleur précise] — [Action] — [Vitesse] — [Profondeur]\n[1 phrase pourquoi]\n\n⏰ MEILLEURE HEURE\n[Quelle heure privilégier et pourquoi en 1-2 phrases]\n\nSi mon journal a des conditions similaires, mentionne-le brièvement. Réponds en québécois décontracté.`;
 
   try {
     const res = await fetch('/.netlify/functions/chat', {
@@ -327,11 +309,14 @@ async function pickAnswer(val) {
     });
     const data = await res.json();
     const reply = data.content?.[0]?.text || 'Erreur de connexion. Réessaie.';
-    lastGuideReply = reply;
 
     c.innerHTML = '';
     const tags = document.createElement('div');
     tags.className = 'q-context-tags';
+    const saisonTag = document.createElement('span');
+    saisonTag.className = 'q-tag';
+    saisonTag.textContent = saison.split(' — ')[0];
+    tags.appendChild(saisonTag);
     Object.values(guideAnswers).forEach(v => {
       const tag = document.createElement('span');
       tag.className = 'q-tag';
@@ -345,17 +330,12 @@ async function pickAnswer(val) {
     result.textContent = reply;
     c.appendChild(result);
 
-    // Boutons vote
     const histId = Date.now();
     addHistoriqueItem(guideAnswers, reply);
+
     const voteRow = document.createElement('div');
     voteRow.className = 'vote-row';
-    voteRow.innerHTML = `
-      <span style="font-size:12px;color:rgba(240,237,230,0.4);align-self:center;">Ça a marché ?</span>
-      <button class="btn-vote" onclick="voteResult(${histId}, 'success', this)">✓ Oui !</button>
-      <button class="btn-vote" onclick="voteResult(${histId}, 'fail', this)">✗ Non</button>
-      <button class="btn-reset" onclick="resetGuide()" style="margin-left:auto">← Nouvelle analyse</button>
-    `;
+    voteRow.innerHTML = `<span class="vote-label">Ça a marché ?</span><button class="btn-vote" onclick="doVote(${histId},'success',this)">✓ Oui !</button><button class="btn-vote" onclick="doVote(${histId},'fail',this)">✗ Non</button><button class="btn-reset" style="margin-left:auto" onclick="resetGuide()">← Nouvelle analyse</button>`;
     c.appendChild(voteRow);
 
     renderHistorique(c);
@@ -364,10 +344,10 @@ async function pickAnswer(val) {
   }
 }
 
-function voteResult(id, result, btn) {
+function doVote(id, result, btn) {
   voteHistorique(id, result);
   btn.classList.add(result);
-  btn.parentElement.querySelectorAll('.btn-vote').forEach(b => b.disabled = true);
+  btn.parentElement.querySelectorAll('.btn-vote').forEach(b => { b.disabled = true; });
 }
 
 function renderHistorique(container) {
@@ -375,30 +355,23 @@ function renderHistorique(container) {
   if (items.length <= 1) return;
   const section = document.createElement('div');
   section.className = 'hist-section';
-  section.innerHTML = `<div class="hist-title">Historique des sorties</div>`;
+  section.innerHTML = '<div class="hist-title">Sorties précédentes</div>';
   items.slice(1, 6).forEach(item => {
     const div = document.createElement('div');
     div.className = 'hist-item';
     const resultLabel = item.result === 'success' ? '✓ A marché' : item.result === 'fail' ? '✗ Pas marché' : 'Non évalué';
-    const resultClass = item.result;
-    div.innerHTML = `<div class="hist-item-date">${item.date}</div><div class="hist-item-conditions">${item.conditions}</div><span class="hist-item-result ${resultClass}">${resultLabel}</span>`;
+    div.innerHTML = `<div class="hist-item-date">${item.date}</div><div class="hist-item-conditions">${item.conditions}</div><span class="hist-item-result ${item.result}">${resultLabel}</span>`;
     section.appendChild(div);
   });
-  if (items.length > 1) {
-    const clearBtn = document.createElement('button');
-    clearBtn.className = 'btn-clear-hist';
-    clearBtn.textContent = 'Effacer l\'historique';
-    clearBtn.onclick = () => { localStorage.removeItem('gp_historique'); section.remove(); };
-    section.appendChild(clearBtn);
-  }
+  const clearBtn = document.createElement('button');
+  clearBtn.className = 'btn-clear';
+  clearBtn.textContent = 'Effacer l\'historique';
+  clearBtn.onclick = () => { localStorage.removeItem('gp_historique'); section.remove(); };
+  section.appendChild(clearBtn);
   container.appendChild(section);
 }
 
-function resetGuide() {
-  guideStep = 0;
-  guideAnswers = {};
-  renderGuide();
-}
+function resetGuide() { guideStep = 0; guideAnswers = {}; renderGuide(); }
 
 // === QUESTION LIBRE ===
 function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); } }
@@ -447,9 +420,9 @@ async function sendCoach() {
 Quand l'utilisateur décrit une sortie :
 1. Fais une synthèse structurée courte (conditions, leurre, résultat)
 2. Pose 1-2 questions ciblées pour compléter les infos manquantes
-3. Si le journal contient des sorties similaires, fais le lien
+3. Si le journal contient des sorties similaires, fais le lien et dis ce qui a fonctionné
 
-Quand l'utilisateur pose une question sur ses patterns, analyse son journal et donne des insights.
+Quand l'utilisateur pose une question sur ses patterns, analyse son journal et donne des insights précis.
 Réponds en québécois décontracté, sois court et pratique.${journalCtx}`;
 
   const msgs = coachMessages.concat([{ role: 'user', content: text }]);
