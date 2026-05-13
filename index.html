@@ -148,6 +148,7 @@ body{background:#111c14;font-family:'Trebuchet MS',Arial,sans-serif;color:#f0ede
     </p>
     <textarea id="notes-input" class="notes-textarea" placeholder="Ex :&#10;23 août — Lac Aylmer — Brochet — Spinnerbait blanc 3/8 oz — Eau 22°C, claire, pointe rocheuse — Bonne pêche&#10;5 sept — Lac Magog — Achigan — Tube jig brun orangé — Fond rocheux 8 pieds — 4 poissons&#10;12 oct — Lac Aylmer — Achigan petite bouche — Jig à doigt 1/4 oz — Banc à 20 pieds sur pointe — Excellent"></textarea>
     <button class="btn-use-notes" onclick="loadNotes()">Charger ces notes dans ma conversation</button>
+    <button class="btn-use-notes" style="margin-top:8px;background:rgba(240,237,230,0.08);border:1px solid rgba(240,237,230,0.15);color:rgba(240,237,230,0.6);" onclick="clearNotes()">Effacer les notes sauvegardées</button>
     <div id="notes-success" class="notes-success">✓ Notes chargées — l'IA les consultera dans tes prochaines questions</div>
   </div>
 
@@ -385,6 +386,7 @@ function loadNotes() {
   const text = document.getElementById('notes-input').value.trim();
   if (!text) return;
   userNotes = text;
+  localStorage.setItem('grandpecheur_notes', text);
   document.getElementById('notes-success').classList.add('visible');
   const pill = document.getElementById('notes-pill');
   pill.classList.add('visible');
@@ -394,7 +396,20 @@ function loadNotes() {
   }, 1500);
 }
 
+function clearNotes() {
+  localStorage.removeItem('grandpecheur_notes');
+  userNotes = '';
+  document.getElementById('notes-input').value = '';
+  document.getElementById('notes-pill').classList.remove('visible');
+}
+
 // === INIT ===
+const savedNotes = localStorage.getItem('grandpecheur_notes');
+if (savedNotes) {
+  userNotes = savedNotes;
+  document.getElementById('notes-input').value = savedNotes;
+  document.getElementById('notes-pill').classList.add('visible');
+}
 renderGuide();
 </script>
 </body>
