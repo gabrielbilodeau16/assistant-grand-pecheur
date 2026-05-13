@@ -319,7 +319,7 @@ exports.handler = async (event) => {
       },
       body: JSON.stringify({
         model: 'claude-haiku-4-5',
-        max_tokens: 600,
+        max_tokens: 1024,
         system: systemOverride || SYSTEM_PROMPT,
         messages,
       }),
