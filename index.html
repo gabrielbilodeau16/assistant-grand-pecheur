@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assistant du Grand Pêcheur</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#111c14;font-family:'Trebuchet MS',Arial,sans-serif;color:#f0ede6;min-height:100vh;-webkit-font-smoothing:antialiased;}
+
+/* HEADER */
+.header{background:#0a1209;border-bottom:1px solid rgba(240,237,230,0.07);padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:Georgia,serif;font-size:16px;font-weight:700;color:rgba(240,237,230,0.6);}
+.brand em{color:#D4651A;font-style:italic;}
+.brand-sub{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:rgba(240,237,230,0.3);margin-top:2px;}
+
+/* TABS */
+.tabs{display:flex;border-bottom:1px solid rgba(240,237,230,0.07);background:#0a1209;}
+.tab{flex:1;padding:14px 8px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(240,237,230,0.4);border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;transition:color .2s;}
+.tab.active{color:#D4651A;border-bottom-color:#D4651A;}
+.tab:hover:not(.active){color:rgba(240,237,230,0.7);}
+
+/* MAIN */
+.main{max-width:800px;margin:0 auto;padding:24px 20px 40px;}
+.panel{display:none;}
+.panel.active{display:block;}
+
+/* CHAT */
+.chat-history{min-height:260px;max-height:420px;overflow-y:auto;margin-bottom:16px;display:flex;flex-direction:column;gap:12px;padding-right:4px;}
+.chat-history::-webkit-scrollbar{width:4px;}
+.chat-history::-webkit-scrollbar-track{background:transparent;}
+.chat-history::-webkit-scrollbar-thumb{background:rgba(212,101,26,0.3);border-radius:2px;}
+.msg{display:flex;flex-direction:column;max-width:85%;}
+.msg-user{align-self:flex-end;align-items:flex-end;}
+.msg-ai{align-self:flex-start;align-items:flex-start;}
+.bubble{padding:11px 15px;border-radius:12px;font-size:14px;line-height:1.7;}
+.msg-user .bubble{background:#D4651A;color:#fff;border-radius:12px 12px 4px 12px;}
+.msg-ai .bubble{background:rgba(240,237,230,0.07);border:1px solid rgba(240,237,230,0.1);color:#f0ede6;border-radius:12px 12px 12px 4px;white-space:pre-wrap;}
+.msg-typing .bubble{color:rgba(240,237,230,0.5);}
+.dots{display:inline-flex;gap:4px;align-items:center;}
+.dots span{width:6px;height:6px;background:rgba(240,237,230,0.4);border-radius:50%;animation:dot 1.2s infinite;}
+.dots span:nth-child(2){animation-delay:.2s;}
+.dots span:nth-child(3){animation-delay:.4s;}
+@keyframes dot{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-4px);}}
+
+.input-row{display:flex;gap:8px;align-items:center;}
+.chat-input{flex:1;background:rgba(240,237,230,0.05);border:1px solid rgba(240,237,230,0.12);color:#f0ede6;padding:11px 14px;font-size:14px;font-family:inherit;border-radius:8px;outline:none;resize:none;height:44px;overflow:hidden;}
+.chat-input:focus{border-color:rgba(212,101,26,0.5);}
+.chat-input::placeholder{color:rgba(240,237,230,0.3);}
+.btn-mic{width:44px;height:44px;border-radius:8px;border:1px solid rgba(240,237,230,0.12);background:rgba(240,237,230,0.05);color:rgba(240,237,230,0.5);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;transition:all .2s;}
+.btn-mic:hover{border-color:rgba(212,101,26,0.4);color:#D4651A;}
+.btn-mic.recording{background:rgba(212,101,26,0.15);border-color:#D4651A;color:#D4651A;animation:pulse 1s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.6;}}
+.btn-send{height:44px;padding:0 18px;background:#D4651A;color:#fff;border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;flex-shrink:0;transition:opacity .2s;}
+.btn-send:disabled{opacity:.4;cursor:not-allowed;}
+.btn-send:not(:disabled):hover{opacity:.85;}
+
+/* NOTES PASTILLE */
+.notes-pill{display:none;background:rgba(212,101,26,0.1);border:1px solid rgba(212,101,26,0.25);border-radius:20px;padding:5px 12px;font-size:11px;color:#D4651A;font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;}
+.notes-pill.visible{display:inline-block;}
+
+/* GUIDE RAPIDE */
+.q-progress{display:flex;gap:4px;margin-bottom:20px;}
+.q-dot{height:3px;flex:1;border-radius:2px;background:rgba(240,237,230,0.12);}
+.q-dot.done{background:#D4651A;}
+.q-dot.active{background:rgba(212,101,26,0.5);}
+.q-counter{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(240,237,230,0.35);margin-bottom:12px;}
+.q-label{font-family:Georgia,serif;font-size:18px;font-weight:700;color:#f0ede6;margin-bottom:16px;line-height:1.4;}
+.q-options{display:flex;flex-direction:column;gap:6px;}
+.q-opt{padding:12px 16px;border-radius:8px;border:1px solid rgba(240,237,230,0.1);background:rgba(240,237,230,0.03);color:rgba(240,237,230,0.8);font-size:14px;cursor:pointer;text-align:left;transition:all .15s;}
+.q-opt:hover{border-color:rgba(212,101,26,0.5);background:rgba(212,101,26,0.07);color:#f0ede6;}
+.q-result-box{background:rgba(240,237,230,0.04);border:1px solid rgba(240,237,230,0.1);border-left:3px solid #D4651A;border-radius:8px;padding:20px;font-size:14px;line-height:1.8;color:#f0ede6;white-space:pre-wrap;margin-bottom:16px;}
+.q-context-tags{margin-bottom:14px;display:flex;flex-wrap:wrap;gap:5px;}
+.q-tag{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;background:rgba(212,101,26,0.1);border:1px solid rgba(212,101,26,0.2);border-radius:3px;color:rgba(212,101,26,0.9);}
+.btn-reset{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:10px 18px;border-radius:6px;border:1px solid rgba(240,237,230,0.15);background:none;color:rgba(240,237,230,0.6);cursor:pointer;}
+.btn-reset:hover{border-color:rgba(240,237,230,0.3);color:#f0ede6;}
+
+/* MES NOTES */
+.notes-intro{font-size:13px;line-height:1.7;color:rgba(240,237,230,0.55);margin-bottom:16px;}
+.notes-intro strong{color:rgba(240,237,230,0.8);}
+.notes-textarea{width:100%;min-height:180px;background:rgba(240,237,230,0.04);border:1px solid rgba(240,237,230,0.1);color:#f0ede6;padding:14px;font-size:13px;font-family:inherit;border-radius:8px;resize:vertical;outline:none;line-height:1.7;}
+.notes-textarea:focus{border-color:rgba(212,101,26,0.4);}
+.notes-textarea::placeholder{color:rgba(240,237,230,0.2);}
+.btn-use-notes{margin-top:10px;width:100%;padding:13px;background:#D4651A;color:#fff;border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:opacity .2s;}
+.btn-use-notes:hover{opacity:.85;}
+.btn-use-notes:disabled{opacity:.4;cursor:not-allowed;}
+.notes-success{margin-top:10px;text-align:center;font-size:12px;color:#D4651A;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;display:none;}
+.notes-success.visible{display:block;}
+
+/* LOADING */
+.loading-overlay{display:none;text-align:center;padding:32px;color:rgba(240,237,230,0.5);font-size:14px;}
+.loading-overlay.visible{display:block;}
+.spinner{display:inline-block;width:20px;height:20px;border:2px solid rgba(212,101,26,0.2);border-top-color:#D4651A;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:8px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* RESPONSIVE */
+@media(max-width:500px){
+  .header{padding:14px 16px;}
+  .main{padding:16px 14px 40px;}
+  .tab{font-size:10px;letter-spacing:1px;padding:12px 4px;}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="brand">L'Université du <em>Grand Pêcheur</em></div>
+    <div class="brand-sub">Assistant · Formation Prédateurs QC</div>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="setTab('chat')">Question libre</button>
+  <button class="tab" onclick="setTab('guide')">Guide rapide</button>
+  <button class="tab" onclick="setTab('notes')">Mes notes</button>
+</div>
+
+<div class="main">
+
+  <!-- CHAT PANEL -->
+  <div id="panel-chat" class="panel active">
+    <div id="notes-pill" class="notes-pill">Notes de pêche chargées</div>
+    <div id="chat-history" class="chat-history">
+      <div class="msg msg-ai">
+        <div class="bubble">Salut ! Dis-moi où tu pêches, la température de l'eau, la clarté, le temps qu'il fait — puis je te dis exactement quoi sortir de ta boîte et comment l'utiliser.</div>
+      </div>
+    </div>
+    <div class="input-row">
+      <textarea id="chat-input" class="chat-input" placeholder="Ex : Lac Massaouïpi, eau claire à 20°C, matin couvert..." rows="1" onkeydown="handleKey(event)"></textarea>
+      <button id="btn-mic" class="btn-mic" title="Parler" onclick="toggleVoice()">🎙</button>
+      <button id="btn-send" class="btn-send" onclick="sendChat()">Envoyer</button>
+    </div>
+  </div>
+
+  <!-- GUIDE PANEL -->
+  <div id="panel-guide" class="panel">
+    <div id="guide-content"></div>
+  </div>
+
+  <!-- NOTES PANEL -->
+  <div id="panel-notes" class="panel">
+    <p class="notes-intro">
+      Colle ici tes notes de pêche — tes dernières sorties, ce qui a fonctionné, les conditions, les spots.
+      <br><br>
+      <strong>Une fois chargées, l'IA va s'en souvenir pendant ta conversation dans l'onglet "Question libre".</strong> Elle va faire des liens si les conditions d'aujourd'hui ressemblent à une sortie passée.
+    </p>
+    <textarea id="notes-input" class="notes-textarea" placeholder="Ex :&#10;23 août — Lac Aylmer — Brochet — Spinnerbait blanc 3/8 oz — Eau 22°C, claire, pointe rocheuse — Bonne pêche&#10;5 sept — Lac Magog — Achigan — Tube jig brun orangé — Fond rocheux 8 pieds — 4 poissons&#10;12 oct — Lac Aylmer — Achigan petite bouche — Jig à doigt 1/4 oz — Banc à 20 pieds sur pointe — Excellent"></textarea>
+    <button class="btn-use-notes" onclick="loadNotes()">Charger ces notes dans ma conversation</button>
+    <div id="notes-success" class="notes-success">✓ Notes chargées — l'IA les consultera dans tes prochaines questions</div>
+  </div>
+
+</div>
+
+<script>
+// === STATE ===
+let chatMessages = [];
+let userNotes = '';
+let guideStep = 0;
+let guideAnswers = {};
+let isRecording = false;
+let recognition = null;
+
+// === QUESTIONS GUIDE RAPIDE ===
+const QUESTIONS = [
+  {key:'espece', label:'Quelle espèce tu cibles ?', opts:['Brochet', 'Achigan à petite bouche', 'Achigan à grande bouche', 'Les deux (brochet + achigan)']},
+  {key:'saison', label:'On est en quelle période ?', opts:['Mai (eau froide, post-hiver)', 'Juin (frai en cours)', 'Juillet (plein été)', 'Août (canicule)', 'Septembre (meilleur mois)', 'Octobre (fin de saison)']},
+  {key:'heure', label:'Tu pêches à quelle heure ?', opts:['Tôt le matin (5h–8h)', 'Matin (8h–12h)', 'Après-midi (12h–17h)', 'Soirée (17h–21h)']},
+  {key:'temp', label:"Température de l'eau ?", opts:['Moins de 10 °C', '10 à 15 °C', '15 à 20 °C', '20 à 25 °C', 'Plus de 25 °C', 'Je sais pas']},
+  {key:'pression', label:'Pression barométrique ?', opts:["En chute (orage qui s'en vient)", 'Stable depuis quelques jours', 'En hausse (après un front)', 'Pendant un front / pluie active', 'Je sais pas']},
+  {key:'clarte', label:"Clarté de l'eau ?", opts:['Claire (fond visible à 3+ pieds)', 'Légèrement colorée', 'Turbide / brune']},
+  {key:'secteur', label:'Quel type de secteur ?', opts:['Baie peu profonde (herbes, sable)', 'Pointe rocheuse', 'Herbiers / nénuphars', 'Structure artificielle (quai)', 'Eau profonde 15+ pieds', 'Je cherche encore']},
+  {key:'meteo', label:'Conditions météo ?', opts:['Grand soleil, peu de vent', 'Nuageux, vent modéré', 'Couvert', 'Pluie légère', 'Vent fort']}
+];
+
+// === TABS ===
+function setTab(id) {
+  document.querySelectorAll('.tab').forEach((t,i) => {
+    const tabs = ['chat','guide','notes'];
+    t.classList.toggle('active', tabs[i] === id);
+  });
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  if (id === 'guide' && !document.querySelector('.q-question')) renderGuide();
+}
+
+// === CHAT ===
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
+}
+
+async function sendChat() {
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const btn = document.getElementById('btn-send');
+  btn.disabled = true;
+  input.value = '';
+
+  addMessage('user', text);
+  chatMessages.push({ role: 'user', content: text });
+
+  const typingEl = addTyping();
+
+  try {
+    const msgs = userNotes
+      ? [{ role: 'user', content: 'Voici mes notes de pêche personnelles pour contexte :\n\n' + userNotes + '\n\nConsulte-les si les conditions actuelles ressemblent à des sorties passées.' },
+         { role: 'assistant', content: "Parfait, j'ai bien noté ton historique de pêche. Qu'est-ce que tu veux savoir ?" },
+         ...chatMessages]
+      : chatMessages;
+
+    const res = await fetch('/.netlify/functions/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: msgs })
+    });
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || 'Erreur de connexion. Réessaie.';
+    typingEl.remove();
+    addMessage('ai', reply);
+    chatMessages.push({ role: 'assistant', content: reply });
+  } catch(e) {
+    typingEl.remove();
+    addMessage('ai', 'Erreur de connexion. Vérifie ta connexion internet et réessaie.');
+  }
+
+  btn.disabled = false;
+  scrollChat();
+}
+
+function addMessage(role, text) {
+  const history = document.getElementById('chat-history');
+  const msg = document.createElement('div');
+  msg.className = 'msg msg-' + role;
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  bubble.textContent = text;
+  msg.appendChild(bubble);
+  history.appendChild(msg);
+  scrollChat();
+  return msg;
+}
+
+function addTyping() {
+  const history = document.getElementById('chat-history');
+  const msg = document.createElement('div');
+  msg.className = 'msg msg-ai msg-typing';
+  msg.innerHTML = '<div class="bubble"><span class="dots"><span></span><span></span><span></span></span></div>';
+  history.appendChild(msg);
+  scrollChat();
+  return msg;
+}
+
+function scrollChat() {
+  const h = document.getElementById('chat-history');
+  h.scrollTop = h.scrollHeight;
+}
+
+// === VOICE INPUT ===
+function toggleVoice() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { alert("La reconnaissance vocale n'est pas disponible sur ce navigateur. Essaie Chrome."); return; }
+  const btn = document.getElementById('btn-mic');
+  if (isRecording) {
+    recognition.stop();
+    isRecording = false;
+    btn.classList.remove('recording');
+    return;
+  }
+  recognition = new SR();
+  recognition.lang = 'fr-CA';
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  recognition.onresult = (e) => {
+    const transcript = e.results[0][0].transcript;
+    document.getElementById('chat-input').value = transcript;
+  };
+  recognition.onend = () => { isRecording = false; btn.classList.remove('recording'); };
+  recognition.onerror = () => { isRecording = false; btn.classList.remove('recording'); };
+  recognition.start();
+  isRecording = true;
+  btn.classList.add('recording');
+}
+
+// === GUIDE RAPIDE ===
+function renderGuide() {
+  const c = document.getElementById('guide-content');
+  c.innerHTML = '';
+
+  const progress = document.createElement('div');
+  progress.className = 'q-progress';
+  QUESTIONS.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'q-dot' + (i < guideStep ? ' done' : i === guideStep ? ' active' : '');
+    progress.appendChild(dot);
+  });
+  c.appendChild(progress);
+
+  const counter = document.createElement('div');
+  counter.className = 'q-counter';
+  counter.textContent = 'Question ' + (guideStep + 1) + ' sur ' + QUESTIONS.length;
+  c.appendChild(counter);
+
+  const q = QUESTIONS[guideStep];
+  const label = document.createElement('div');
+  label.className = 'q-label q-question';
+  label.textContent = q.label;
+  c.appendChild(label);
+
+  const opts = document.createElement('div');
+  opts.className = 'q-options';
+  q.opts.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'q-opt';
+    btn.textContent = opt;
+    btn.onclick = () => pickAnswer(opt);
+    opts.appendChild(btn);
+  });
+  c.appendChild(opts);
+}
+
+async function pickAnswer(val) {
+  const q = QUESTIONS[guideStep];
+  guideAnswers[q.key] = val;
+
+  if (guideStep < QUESTIONS.length - 1) {
+    guideStep++;
+    renderGuide();
+    return;
+  }
+
+  // All answered — generate recommendation
+  const c = document.getElementById('guide-content');
+  c.innerHTML = '<div class="loading-overlay visible"><span class="spinner"></span>Analyse des conditions en cours...</div>';
+
+  const summary = QUESTIONS.map(q2 => q2.label + ' → ' + (guideAnswers[q2.key] || '?')).join('\n');
+  const notesContext = userNotes ? '\n\nMes notes de pêche personnelles :\n' + userNotes : '';
+  const prompt = 'Voici mes conditions de pêche aujourd\'hui :\n\n' + summary + notesContext + '\n\nDonne-moi une recommandation complète et précise : quel leurre (modèle, couleur, poids), quelle action de récupération, quelle vitesse, quelle profondeur à cibler, et pourquoi dans ces conditions précises. Si mes notes ressemblent à ces conditions, mentionne-le.';
+
+  try {
+    const res = await fetch('/.netlify/functions/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: [{ role: 'user', content: prompt }] })
+    });
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || 'Erreur de connexion.';
+
+    c.innerHTML = '';
+
+    const tags = document.createElement('div');
+    tags.className = 'q-context-tags';
+    Object.values(guideAnswers).forEach(v => {
+      const tag = document.createElement('span');
+      tag.className = 'q-tag';
+      tag.textContent = v;
+      tags.appendChild(tag);
+    });
+    c.appendChild(tags);
+
+    const result = document.createElement('div');
+    result.className = 'q-result-box';
+    result.textContent = reply;
+    c.appendChild(result);
+
+    const resetBtn = document.createElement('button');
+    resetBtn.className = 'btn-reset';
+    resetBtn.textContent = '← Nouvelle analyse';
+    resetBtn.onclick = resetGuide;
+    c.appendChild(resetBtn);
+  } catch(e) {
+    c.innerHTML = '<div class="q-result-box">Erreur de connexion. Réessaie.</div><button class="btn-reset" onclick="resetGuide()">← Recommencer</button>';
+  }
+}
+
+function resetGuide() {
+  guideStep = 0;
+  guideAnswers = {};
+  renderGuide();
+}
+
+// === NOTES ===
+function loadNotes() {
+  const text = document.getElementById('notes-input').value.trim();
+  if (!text) return;
+  userNotes = text;
+  document.getElementById('notes-success').classList.add('visible');
+  const pill = document.getElementById('notes-pill');
+  pill.classList.add('visible');
+  setTimeout(() => {
+    document.getElementById('notes-success').classList.remove('visible');
+    setTab('chat');
+  }, 1500);
+}
+
+// === INIT ===
+renderGuide();
+</script>
+</body>
+</html>
